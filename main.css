@@ -1,0 +1,117 @@
+.wrapper {
+  display: flex;
+  height: 350px; 
+  /* background-color: blueviolet; */
+  width: auto; 
+  justify-content: center;
+  align-items: center;
+  gap: 25px; 
+  padding: 15px; 
+}
+
+.main-text{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; 
+    width: 300px; 
+    height: auto; 
+}
+
+.footer-access{
+    display: flex; 
+    background-color:blue; 
+}
+
+.header {
+  background: tomato;
+}
+
+.navigation{
+    display: flex;  
+    justify-content: center;
+    gap: 20px; 
+}
+
+
+
+.footer {
+  /* background: lightgreen; */
+}
+
+.bio-pic{
+    width : 500px; 
+    height: auto; 
+    justify-content: baseline;
+}
+
+
+
+.image img{
+    width: 200px; 
+    height: auto; 
+    order: 2; 
+}
+
+.main {
+  text-align: center;
+  background: deepskyblue;
+}
+
+.aside-1 {
+  background: gold;
+}
+
+.aside-2 {
+  background: hotpink;
+}
+
+@media all and (min-width: 600px) {
+  .aside { flex: 1 0 0; }
+}
+
+@media all and (min-width: 800px) {
+  .main    { flex: 3 0px; }
+  .aside-1 { order: 1; } 
+  .main    { order: 2; }
+  .aside-2 { order: 3; }
+  .footer  { order: 4; }
+}
+
+body{
+  padding: 2em; 
+}
+
+
+.bottomButton{
+  padding: 7.5px 15px; 
+  color: black;
+  background-color: white;
+  border-radius: 5px;
+  border-color: white;
+  font-size: 35px;
+  text-decoration: none;  
+}
+
+.bebas-neue-regular {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.forg{
+  display: flex; 
+  width: 400px;
+  height: auto; 
+}
+
+.goalDesc{
+  justify-content: center;
+  display: flex; 
+  background-color: red;
+
+}
+
+
+.bioImage{
+  border-radius: 15px; 
+  width: 300px; 
+  height: auto; 
+}

@@ -1,0 +1,10 @@
+function createLapTime(){
+
+
+}
+
+
+
+function changeLapYardage(){
+    
+}
