@@ -1,0 +1,21 @@
+{
+  "name": "cmccainweb",
+  "version": "1.0.0",
+  "description": "Take 2",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taidude1/cmccainWeb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/taidude1/cmccainWeb/issues"
+  },
+  "homepage": "https://github.com/taidude1/cmccainWeb#readme"
+}

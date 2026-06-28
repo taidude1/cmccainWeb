@@ -117,3 +117,12 @@ body{
 }
 
 
+.goal {
+  padding: 15px;
+}
+
+.challenge_bar {
+  justify-content: center;
+  max-width: 500px;
+}
+

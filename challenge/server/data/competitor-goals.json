@@ -1,0 +1,107 @@
+[
+  {
+    "id": "f001",
+    "major": "finance",
+    "title": "Build a discounted cash flow model",
+    "description": "Full DCF from scratch using comparable companies",
+    "pace": "ahead"
+  },
+  {
+    "id": "f002",
+    "major": "finance",
+    "title": "Complete Bloomberg Market Concepts module",
+    "description": "BMC certification prep",
+    "pace": "on-track"
+  },
+  {
+    "id": "f003",
+    "major": "finance",
+    "title": "Research and pitch 2 stock ideas",
+    "description": "Long/short equity pitches for investment club",
+    "pace": "behind"
+  },
+  {
+    "id": "f004",
+    "major": "finance",
+    "title": "Finish Excel financial modeling exercises",
+    "description": "WSP modeling course — LBO module",
+    "pace": "on-track"
+  },
+  {
+    "id": "f005",
+    "major": "finance",
+    "title": "Network with 3 finance professionals",
+    "description": "Coffee chats / LinkedIn outreach",
+    "pace": "ahead"
+  },
+  {
+    "id": "c001",
+    "major": "cs",
+    "title": "Finish this week's algorithms assignment",
+    "description": "Graph traversal + dynamic programming problems",
+    "pace": "behind"
+  },
+  {
+    "id": "c002",
+    "major": "cs",
+    "title": "Ship a new feature on side project",
+    "description": "Auth flow for the web app",
+    "pace": "on-track"
+  },
+  {
+    "id": "c003",
+    "major": "cs",
+    "title": "Solve 5 LeetCode problems",
+    "description": "Medium difficulty, trees & graphs",
+    "pace": "struggling"
+  },
+  {
+    "id": "c004",
+    "major": "cs",
+    "title": "Write unit tests for current codebase",
+    "description": "Aiming for 80% coverage on core modules",
+    "pace": "behind"
+  },
+  {
+    "id": "c005",
+    "major": "cs",
+    "title": "Set up CI/CD pipeline",
+    "description": "GitHub Actions → auto deploy to VPS",
+    "pace": "ahead"
+  },
+  {
+    "id": "e001",
+    "major": "engineering",
+    "title": "Complete fluid dynamics lab report",
+    "description": "Pipe flow experiment — due Friday",
+    "pace": "ahead"
+  },
+  {
+    "id": "e002",
+    "major": "engineering",
+    "title": "Finish thermodynamics problem set",
+    "description": "Chapters 7–9 heat transfer problems",
+    "pace": "on-track"
+  },
+  {
+    "id": "e003",
+    "major": "engineering",
+    "title": "Advance senior design CAD model",
+    "description": "Solidworks assembly — targeting 60% completion",
+    "pace": "on-track"
+  },
+  {
+    "id": "e004",
+    "major": "engineering",
+    "title": "Study for materials science exam",
+    "description": "Stress-strain, fatigue, fracture mechanics",
+    "pace": "behind"
+  },
+  {
+    "id": "e005",
+    "major": "engineering",
+    "title": "Submit calibration report for lab equipment",
+    "description": "Tensile tester calibration documentation",
+    "pace": "ahead"
+  }
+]
