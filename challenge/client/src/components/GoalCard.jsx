@@ -1,95 +1,46 @@
 import { useState } from 'react';
 import { updateGoal, deleteGoal } from '../api.js';
 
-export default function GoalCard({ goal, token, onUpdate, onDelete }) {
-  const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({
-    title: goal.title,
-    description: goal.description,
-    selfProgress: goal.selfProgress,
-    judgeProgress: goal.judgeProgress,
-    judgeComment: goal.judgeComment,
-  });
-  const [saving, setSaving] = useState(false);
+export default function GoalCard({ goal, allGoals, setGoals, token, canEdit }) {
+  const [editing,  setEditing]  = useState(false);
+  const [form,     setForm]     = useState({ title: goal.title, description: goal.description });
+  const [sliders,  setSliders]  = useState({ selfProgress: goal.selfProgress, judgeProgress: goal.judgeProgress, judgeComment: goal.judgeComment });
+  const [saving,   setSaving]   = useState(false);
 
-  function set(key) {
-    return e => setForm(prev => ({ ...prev, [key]: e.target.value }));
-  }
-
-  function setNum(key) {
-    return e => setForm(prev => ({ ...prev, [key]: Number(e.target.value) }));
-  }
-
-  async function handleSave() {
+  async function saveEdits() {
     setSaving(true);
     try {
-      const updated = await updateGoal(token, goal.id, form);
-      onUpdate(updated);
+      const updated = await updateGoal(token, goal.id, { ...form, ...sliders });
+      setGoals(allGoals.map(g => g.id === goal.id ? updated : g));
       setEditing(false);
-    } finally {
-      setSaving(false);
-    }
+    } catch { /* ignore */ }
+    setSaving(false);
   }
 
-  async function handleDelete() {
-    if (!window.confirm(`Delete "${goal.title}"?`)) return;
+  async function remove() {
+    if (!confirm('Delete this goal?')) return;
     await deleteGoal(token, goal.id);
-    onDelete(goal.id);
-  }
-
-  function cancelEdit() {
-    setForm({
-      title: goal.title,
-      description: goal.description,
-      selfProgress: goal.selfProgress,
-      judgeProgress: goal.judgeProgress,
-      judgeComment: goal.judgeComment,
-    });
-    setEditing(false);
+    setGoals(allGoals.filter(g => g.id !== goal.id));
   }
 
   if (editing) {
     return (
       <div className="goal-card">
-        <div className="goal-edit">
-          <input className="edit-title" value={form.title} onChange={set('title')} />
-          <textarea
-            placeholder="Description"
-            value={form.description}
-            onChange={set('description')}
-            rows={2}
-          />
-
+        <div className="add-goal-form">
+          <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Goal title" />
+          <textarea rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Description" />
           <label className="slider-label">
-            My Progress: {form.selfProgress}%
-            <input
-              type="range" min={0} max={100}
-              value={form.selfProgress}
-              onChange={setNum('selfProgress')}
-            />
+            Self progress: {sliders.selfProgress}%
+            <input type="range" min="0" max="100" value={sliders.selfProgress} onChange={e => setSliders(s => ({ ...s, selfProgress: Number(e.target.value) }))} />
           </label>
-
           <label className="slider-label">
-            Judge Score: {form.judgeProgress}%
-            <input
-              type="range" min={0} max={100}
-              value={form.judgeProgress}
-              onChange={setNum('judgeProgress')}
-            />
+            Judge score: {sliders.judgeProgress}%
+            <input type="range" min="0" max="100" value={sliders.judgeProgress} onChange={e => setSliders(s => ({ ...s, judgeProgress: Number(e.target.value) }))} />
           </label>
-
-          <textarea
-            placeholder="Judge comment…"
-            value={form.judgeComment}
-            onChange={set('judgeComment')}
-            rows={2}
-          />
-
+          <input value={sliders.judgeComment} onChange={e => setSliders(s => ({ ...s, judgeComment: e.target.value }))} placeholder="Judge comment (optional)" />
           <div className="form-actions">
-            <button onClick={handleSave} className="btn-primary" disabled={saving || !form.title.trim()}>
-              {saving ? 'Saving…' : 'Save'}
-            </button>
-            <button onClick={cancelEdit} className="btn-secondary">Cancel</button>
+            <button className="btn-primary btn-sm" onClick={saveEdits} disabled={saving}>Save</button>
+            <button className="btn-ghost btn-sm" onClick={() => setEditing(false)}>Cancel</button>
           </div>
         </div>
       </div>
@@ -99,16 +50,15 @@ export default function GoalCard({ goal, token, onUpdate, onDelete }) {
   return (
     <div className="goal-card">
       <div className="goal-card-header">
-        <h3>{goal.title}</h3>
-        {token && (
+        <div className="goal-title">{goal.title}</div>
+        {canEdit && (
           <div className="card-actions">
-            <button onClick={() => setEditing(true)} className="btn-secondary btn-sm">Edit</button>
-            <button onClick={handleDelete} className="btn-danger btn-sm">Delete</button>
+            <button className="btn-ghost btn-sm" onClick={() => setEditing(true)}>Edit</button>
+            <button className="btn-danger btn-sm" onClick={remove}>×</button>
           </div>
         )}
       </div>
-
-      {goal.description && <p className="goal-desc">{goal.description}</p>}
+      {goal.description && <div className="goal-desc">{goal.description}</div>}
 
       <div className="goal-progress-rows">
         <div className="mini-progress-row">
@@ -128,7 +78,7 @@ export default function GoalCard({ goal, token, onUpdate, onDelete }) {
       </div>
 
       {goal.judgeComment && (
-        <blockquote className="judge-comment">"{goal.judgeComment}"</blockquote>
+        <div className="judge-comment">"{goal.judgeComment}"</div>
       )}
     </div>
   );

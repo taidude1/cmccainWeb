@@ -1,0 +1,5 @@
+{
+  "connor": { "label": "Connor's Weekly Progress", "value": 0 },
+  "jack":   { "label": "Jack's Weekly Progress",   "value": 0 },
+  "overall":{ "label": "Overall Research Progress", "value": 0 }
+}

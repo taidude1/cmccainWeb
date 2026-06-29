@@ -4,18 +4,18 @@ import { login } from '../api.js';
 export default function Login({ onLogin, onClose }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error,    setError]    = useState('');
+  const [loading,  setLoading]  = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true);
     setError('');
+    setLoading(true);
     try {
-      const data = await login(username, password);
-      onLogin(data.token, data.username);
+      const { token, username: u, role } = await login(username.trim(), password);
+      onLogin(token, u, role);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -25,15 +25,16 @@ export default function Login({ onLogin, onClose }) {
     <div className="login-card">
       <div className="login-header">
         <h2>Log in</h2>
-        <button onClick={onClose} className="close-btn" aria-label="Close">×</button>
+        <button onClick={onClose} className="close-btn" aria-label="Close">&times;</button>
       </div>
       <form onSubmit={handleSubmit}>
         <label>
           Username
           <input
+            autoFocus
             value={username}
             onChange={e => setUsername(e.target.value)}
-            autoFocus
+            placeholder="Your username"
             autoComplete="username"
           />
         </label>
@@ -43,11 +44,12 @@ export default function Login({ onLogin, onClose }) {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
+            placeholder="••••••••"
             autoComplete="current-password"
           />
         </label>
-        {error && <p className="error">{error}</p>}
-        <button type="submit" disabled={loading} className="btn-primary">
+        {error && <div className="error-msg">{error}</div>}
+        <button type="submit" className="btn-primary" disabled={loading}>
           {loading ? 'Logging in…' : 'Log in'}
         </button>
       </form>
