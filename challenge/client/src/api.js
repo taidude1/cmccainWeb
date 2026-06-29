@@ -46,10 +46,7 @@ export const updateGoal = (token, id, data) =>
     body: JSON.stringify(data)
   });
 export const deleteGoal = (token, id) =>
-  request(`${BASE}/goals/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders(token)
-  });
+  request(`${BASE}/goals/${id}`, { method: 'DELETE', headers: authHeaders(token) });
 
 // Competitor goals
 export const fetchCompetitorGoals = () => request(`${BASE}/competitor-goals`);
@@ -66,10 +63,7 @@ export const updateCompetitorGoal = (token, id, data) =>
     body: JSON.stringify(data)
   });
 export const deleteCompetitorGoal = (token, id) =>
-  request(`${BASE}/competitor-goals/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders(token)
-  });
+  request(`${BASE}/competitor-goals/${id}`, { method: 'DELETE', headers: authHeaders(token) });
 
 // Punishments
 export const fetchPunishments = () => request(`${BASE}/punishments`);
@@ -102,10 +96,7 @@ export const completePunishment = (token, id) =>
     headers: { 'Content-Type': 'application/json', ...authHeaders(token) }
   });
 export const deletePunishment = (token, id) =>
-  request(`${BASE}/punishments/${id}`, {
-    method: 'DELETE',
-    headers: authHeaders(token)
-  });
+  request(`${BASE}/punishments/${id}`, { method: 'DELETE', headers: authHeaders(token) });
 
 // Settings
 export const fetchSettings = () => request(`${BASE}/settings`);
@@ -115,3 +106,23 @@ export const updateSettings = (token, data) =>
     headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
     body: JSON.stringify(data)
   });
+
+// Projects
+export const fetchProjects = () => request(`${BASE}/projects`);
+export const createProject = (token, data) =>
+  request(`${BASE}/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify(data)
+  });
+export const updateProject = (token, id, data) =>
+  request(`${BASE}/projects/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
+    body: JSON.stringify(data)
+  });
+export const deleteProject = (token, id) =>
+  request(`${BASE}/projects/${id}`, { method: 'DELETE', headers: authHeaders(token) });
+
+// Stats
+export const fetchStats = () => request(`${BASE}/stats`);

@@ -614,7 +614,7 @@ textarea { resize: vertical; }
 /* ── Selects ── */
 select { cursor: pointer; }
 
-/* ── Responsive ── */
+/* ── Responsive (existing) ── */
 @media (max-width: 900px) {
   .goals-grid { grid-template-columns: 1fr; }
   .research-bars { grid-template-columns: 1fr; gap: 0.75rem; }
@@ -641,4 +641,482 @@ select { cursor: pointer; }
   .goal-card { padding: 0.9rem 1.1rem; }
   .punishments-list { padding: 1rem; }
   .login-card { width: calc(100vw - 2rem); padding: 1.5rem; }
+}
+
+/* ══════════════════════════════════════
+   PROJECT VIENNA STYLES
+══════════════════════════════════════ */
+
+/* Header */
+.vienna-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0 1.1rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.vienna-title-block { display: flex; align-items: baseline; gap: 1rem; }
+
+.vienna-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.vienna-date {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* Live clock */
+.live-clock {
+  text-align: center;
+  font-size: 2.8rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  padding: 0.5rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Top section: chart + stats */
+.vienna-top {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.vienna-chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 0.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+/* TradingView-style chart */
+.trading-chart-wrap {
+  position: relative;
+}
+
+.chart-legend-custom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.chart-empty {
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+.chart-tooltip {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.875rem;
+  box-shadow: var(--shadow);
+  font-size: 0.82rem;
+}
+.chart-tooltip-date { font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+
+/* Stats panel */
+.stats-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  box-shadow: var(--shadow-sm);
+  gap: 0.5rem;
+}
+
+.stat-item { text-align: center; }
+
+.stat-value {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* User progress sections (dashed boxes) */
+.vienna-user-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  position: relative;
+}
+
+.vienna-user-section.dashed {
+  border: 2px dashed var(--border);
+  background: rgba(255,255,255,0.7);
+}
+
+.vienna-user-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.875rem;
+}
+
+.vienna-user-inner {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.vienna-bars-col { display: flex; flex-direction: column; gap: 0.875rem; }
+
+.vienna-bar-row { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.vienna-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vienna-bar-label { font-size: 0.82rem; color: var(--text-muted); }
+
+.vienna-bar-pct {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.vienna-track {
+  height: 10px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.vienna-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vienna-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.vienna-goals-col {
+  border-left: 1px solid var(--border);
+  padding-left: 1.25rem;
+}
+
+.vienna-goals-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+}
+
+.recent-goal-item {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.recent-goal-item:last-child { border-bottom: none; }
+
+.recent-goal-title { font-size: 0.88rem; font-weight: 500; color: var(--text); margin-bottom: 0.35rem; }
+.recent-goal-bar-row { display: flex; align-items: center; gap: 0.5rem; }
+.recent-goal-comment { font-size: 0.75rem; color: var(--text-muted); font-style: italic; margin-top: 0.25rem; }
+.recent-goal-empty { font-size: 0.82rem; color: var(--text-light); padding: 0.5rem 0; }
+
+/* Bottom section */
+.vienna-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.vienna-left-stats { display: flex; flex-direction: column; }
+
+.vienna-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.vienna-projects-card { padding: 0; overflow: hidden; }
+
+/* Commit calendar */
+.commit-calendar { width: 100%; }
+
+.commit-months {
+  display: flex;
+  padding-left: 28px;
+  margin-bottom: 4px;
+}
+.commit-month-cell {
+  width: 13px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  overflow: visible;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.commit-grid-row { display: flex; gap: 4px; }
+
+.commit-day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 24px;
+  flex-shrink: 0;
+}
+.commit-day-label {
+  height: 11px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 11px;
+}
+
+.commit-grid { display: flex; gap: 2px; overflow-x: auto; }
+
+.commit-col { display: flex; flex-direction: column; gap: 2px; }
+
+.commit-cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  cursor: default;
+  transition: opacity 0.15s;
+}
+.commit-cell:hover { opacity: 0.8; }
+
+.commit-legend {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 0.5rem;
+  justify-content: flex-end;
+}
+.commit-legend-label { font-size: 0.68rem; color: var(--text-muted); }
+
+/* Performance chart */
+.perf-chart-wrap { padding: 0.25rem 0; }
+
+/* Project gallery */
+.project-gallery-wrap { padding: 1.25rem; }
+
+.project-gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.project-gallery-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.project-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+}
+.project-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--teal); }
+.project-card.featured { border-color: var(--forest); box-shadow: 0 0 0 2px rgba(42,92,69,0.15); }
+
+.project-card-img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.project-card-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(42,92,69,0.04);
+  font-size: 2rem;
+}
+
+.project-card-body {
+  padding: 0.5rem 0.6rem;
+  background: var(--card);
+}
+.project-card-title { font-size: 0.75rem; font-weight: 600; color: var(--text); line-height: 1.2; }
+.project-card-owner { font-size: 0.68rem; color: var(--text-muted); }
+
+.project-delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(201,107,58,0.85);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.project-card:hover .project-delete-btn { display: flex; }
+
+.project-featured-desc {
+  background: rgba(42,92,69,0.03);
+  border: 1px solid rgba(42,92,69,0.10);
+  border-radius: var(--radius-sm);
+  padding: 0.875rem 1rem;
+}
+.project-featured-title { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+.project-featured-body  { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+.project-featured-nav {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+  justify-content: center;
+}
+.featured-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition);
+}
+.featured-dot.active { background: var(--forest); }
+
+/* Project modal */
+.project-modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  width: min(560px, calc(100vw - 2rem));
+  box-shadow: var(--shadow-md);
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.project-modal-img { width: 100%; border-radius: var(--radius-sm); margin-bottom: 1.25rem; }
+.project-modal-title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+.project-modal-owner { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.875rem; }
+.project-modal-desc { font-size: 0.92rem; color: var(--text); line-height: 1.6; }
+.project-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.875rem; }
+.project-tag { font-size: 0.75rem; background: rgba(42,92,69,0.07); color: var(--forest); padding: 0.2rem 0.6rem; border-radius: 100px; }
+
+/* Footer */
+.vienna-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: rgba(42,92,69,0.02);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 1rem 1.5rem;
+}
+.footer-link { color: var(--forest); text-decoration: none; font-weight: 500; }
+.footer-link:hover { text-decoration: underline; }
+
+/* Admin panel */
+.admin-panel {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Vienna responsive */
+@media (max-width: 900px) {
+  .vienna-top { grid-template-columns: 1fr; }
+  .stats-panel { flex-direction: row; }
+  .stat-value { font-size: 1.8rem; }
+  .vienna-bottom { grid-template-columns: 1fr; }
+  .vienna-user-inner { grid-template-columns: 1fr; }
+  .vienna-goals-col { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 1rem; margin-top: 0.75rem; }
+  .project-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .vienna-title { font-size: 1.5rem; }
+  .vienna-date { font-size: 0.9rem; }
+  .live-clock { font-size: 2rem; }
+  .stat-value { font-size: 1.5rem; }
+  .project-grid { grid-template-columns: repeat(2, 1fr); }
+  .commit-grid { overflow-x: auto; }
 }
