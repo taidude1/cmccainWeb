@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { existsSync, writeFileSync } from 'fs';
 import authRoutes          from './routes/auth.js';
 import goalsRoutes         from './routes/goals.js';
 import algorithmsRoutes    from './routes/algorithms.js';
@@ -13,6 +14,33 @@ import projectsRoutes      from './routes/projects.js';
 import statsRoutes         from './routes/stats.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Seed any missing data files so the server starts cleanly on a fresh clone
+const SEEDS = {
+  './data/goals.json':      '[]',
+  './data/punishments.json':'[]',
+  './data/projects.json':   '[]',
+  './data/research.json':   JSON.stringify({
+    connor:  { label: "Connor's Weekly Progress", value: 0 },
+    jack:    { label: "Jack's Weekly Progress",   value: 0 },
+    overall: { label: "Overall Research Progress", value: 0 },
+  }, null, 2),
+  './data/settings.json':   JSON.stringify({
+    weeklyContext: '',
+    barLabels: {
+      connorBarA: 'Competitor Avg (Finance / CS / Eng)',
+      connorBarB: "Connor's Goal Avg",
+    },
+  }, null, 2),
+};
+
+for (const [path, content] of Object.entries(SEEDS)) {
+  if (!existsSync(path)) {
+    writeFileSync(path, content);
+    console.log(`Created missing data file: ${path}`);
+  }
+}
+
 const app  = express();
 const PORT = process.env.PORT || 3001;
 

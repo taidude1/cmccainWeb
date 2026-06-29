@@ -3,13 +3,15 @@ challenge/client/dist/
 challenge/client/node_modules/
 challenge/server/node_modules/
 
-# Runtime data — keep seed/empty files but ignore live data
+# Runtime data — all data files are live state, not committed
 challenge/server/data/users.json
 challenge/server/data/goals.json
 challenge/server/data/punishments.json
+challenge/server/data/settings.json
+challenge/server/data/research.json
+challenge/server/data/projects.json
 
-# Don't ignore seed files (research.json, projects.json, settings.json, competitor-goals.json)
-# so new installs get sensible defaults
+# Seed files committed separately (competitor-goals.json is static enough to track)
 
 .env
 *.log
