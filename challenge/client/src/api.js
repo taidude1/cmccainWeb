@@ -24,12 +24,16 @@ export const fetchAlgorithms = () => request(`${BASE}/algorithms`);
 
 // Research
 export const fetchResearch = () => request(`${BASE}/research`);
-export const updateResearch = (token, key, value) =>
-  request(`${BASE}/research/${key}`, {
+export const updateResearch = (token, key, value, label) => {
+  const body = {};
+  if (value !== undefined) body.value = value;
+  if (label !== undefined) body.label = label;
+  return request(`${BASE}/research/${key}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeaders(token) },
-    body: JSON.stringify({ value })
+    body: JSON.stringify(body)
   });
+};
 
 // Goals
 export const fetchGoals = () => request(`${BASE}/goals`);

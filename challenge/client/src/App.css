@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&family=Alegreya+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
 
 /* ── Tokens ── */
 :root {
@@ -10,8 +10,12 @@
   --teal:       #4DA8A4;
   --teal-light: #7FC8C5;
   --sky:        #A8C8DC;
-  --terra:      #C96B3A;
-  --terra-light:#E8956A;
+  --ferrari:    #CC2200;
+  --ferrari-mid:#E03A18;
+  --orange:     #E87030;
+  --orange-light:#F5A070;
+  --terra:      #E05020;
+  --terra-light:#F07848;
   --stone:      #8A9BAA;
   --text:       #2C3440;
   --text-muted: #6B7A8A;
@@ -37,6 +41,7 @@ body {
 }
 
 /* ── Layout ── */
+.app-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem 2rem; position: relative; z-index: 1; }
 .app { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem 5rem; }
 
 .app-main { display: flex; flex-direction: column; gap: 1.75rem; padding-top: 1.25rem; }
@@ -206,10 +211,11 @@ body {
 .section-card { padding: 1.5rem; }
 
 .section-heading {
-  font-size: 0.72rem;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: var(--text-muted);
   margin-bottom: 1.25rem;
 }
@@ -656,34 +662,40 @@ select { cursor: pointer; }
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  background: var(--bg);
+  background: rgba(247,245,240,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 100;
 }
 
-.vienna-title-block { display: flex; align-items: baseline; gap: 1rem; }
+.vienna-title-block { display: flex; align-items: baseline; gap: 1.1rem; }
 
 .vienna-title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 900;
   color: var(--text);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   line-height: 1;
 }
 
 .vienna-date {
-  font-size: 1.1rem;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 1.05rem;
   color: var(--text-muted);
-  font-weight: 300;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 /* Live clock */
 .live-clock {
   text-align: center;
-  font-size: 2.8rem;
+  font-family: 'Urbanist', sans-serif;
+  font-size: 3rem;
   font-weight: 300;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   color: var(--text);
-  padding: 0.5rem 0;
+  padding: 0.25rem 0 0.5rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -761,11 +773,12 @@ select { cursor: pointer; }
 .stat-item { text-align: center; }
 
 .stat-value {
+  font-family: 'Urbanist', sans-serif;
   font-size: 2.6rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
 }
 
 .stat-label {
@@ -1067,22 +1080,97 @@ select { cursor: pointer; }
 .project-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.875rem; }
 .project-tag { font-size: 0.75rem; background: rgba(42,92,69,0.07); color: var(--forest); padding: 0.2rem 0.6rem; border-radius: 100px; }
 
-/* Footer */
+/* Full-width footer */
 .vienna-footer {
+  width: 100%;
+  background: var(--forest);
+  color: rgba(255,255,255,0.75);
+  padding: 1.25rem 0;
+  position: relative;
+  z-index: 1;
+  margin-top: 1rem;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 0;
-  margin-top: 1rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  background: rgba(42,92,69,0.02);
-  border-radius: 0 0 var(--radius) var(--radius);
-  padding: 1rem 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.footer-link { color: var(--forest); text-decoration: none; font-weight: 500; }
-.footer-link:hover { text-decoration: underline; }
+.footer-brand {
+  font-family: 'Urbanist', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: -0.01em;
+}
+.footer-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.88rem; transition: color 0.15s; }
+.footer-link:hover { color: #fff; }
+
+/* Vienna card header (used in bottom section) */
+.vienna-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Connor/Jack toggle */
+.user-toggle {
+  display: flex;
+  background: rgba(42,92,69,0.07);
+  border-radius: 100px;
+  padding: 3px;
+  gap: 2px;
+}
+.toggle-btn {
+  background: transparent;
+  border: none;
+  border-radius: 100px;
+  padding: 0.25rem 0.875rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+.toggle-btn.active {
+  background: var(--forest);
+  color: #fff;
+}
+
+/* Inline label editing */
+.label-edit-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.label-input {
+  font-size: 0.82rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--teal);
+  border-radius: var(--radius-xs);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  width: 200px;
+}
+.label-edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  padding: 0 0.2rem;
+  margin-left: 0.3rem;
+  transition: color var(--transition);
+  line-height: 1;
+}
+.label-edit-btn:hover { color: var(--forest); }
 
 /* Admin panel */
 .admin-panel {
@@ -1103,8 +1191,10 @@ select { cursor: pointer; }
 
 /* Vienna responsive */
 @media (max-width: 900px) {
+  .app-wrapper { padding: 0 1rem 2rem; }
   .vienna-top { grid-template-columns: 1fr; }
-  .stats-panel { flex-direction: row; }
+  .stats-panel { flex-direction: row; gap: 0; }
+  .stat-item { flex: 1; }
   .stat-value { font-size: 1.8rem; }
   .vienna-bottom { grid-template-columns: 1fr; }
   .vienna-user-inner { grid-template-columns: 1fr; }
@@ -1113,10 +1203,13 @@ select { cursor: pointer; }
 }
 
 @media (max-width: 600px) {
-  .vienna-title { font-size: 1.5rem; }
-  .vienna-date { font-size: 0.9rem; }
-  .live-clock { font-size: 2rem; }
+  .app-wrapper { padding: 0 0.875rem 1.5rem; }
+  .vienna-title { font-size: 1.55rem; }
+  .vienna-date { font-size: 0.85rem; display: none; }
+  .live-clock { font-size: 2.2rem; }
   .stat-value { font-size: 1.5rem; }
+  .stats-panel { flex-direction: column; gap: 0.75rem; }
   .project-grid { grid-template-columns: repeat(2, 1fr); }
   .commit-grid { overflow-x: auto; }
+  .footer-inner { flex-direction: column; gap: 0.5rem; text-align: center; }
 }

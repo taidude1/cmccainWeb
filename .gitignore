@@ -1,0 +1,17 @@
+node_modules/
+challenge/client/dist/
+challenge/client/node_modules/
+challenge/server/node_modules/
+
+# Runtime data — keep seed/empty files but ignore live data
+challenge/server/data/users.json
+challenge/server/data/goals.json
+challenge/server/data/punishments.json
+
+# Don't ignore seed files (research.json, projects.json, settings.json, competitor-goals.json)
+# so new installs get sensible defaults
+
+.env
+*.log
+.DS_Store
+Thumbs.db

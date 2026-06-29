@@ -24,24 +24,24 @@ router.get('/', (req, res) => {
     if (!daily[d]) daily[d] = { goals: 0, projects: 0 };
     daily[d][type]++;
   }
-
   for (const g of completedGoals) inc(g.completedAt || g.createdAt, 'goals');
   for (const p of projects)       inc(p.completedAt || p.createdAt, 'projects');
 
-  // Commit calendar (goals per day, Connor only)
-  const commitData = {};
+  // Per-user commit calendars (goals completed per day)
+  const commitDataConnor = {};
+  const commitDataJack   = {};
   for (const g of completedGoals) {
     if (!g.completedAt) continue;
     const d = g.completedAt.slice(0, 10);
-    commitData[d] = (commitData[d] || 0) + 1;
+    if (g.owner === 'jack') commitDataJack[d]   = (commitDataJack[d]   || 0) + 1;
+    else                    commitDataConnor[d]  = (commitDataConnor[d] || 0) + 1;
   }
 
-  // Sorted date range for chart
+  // Sorted dates for cumulative chart
   const dates = Object.keys(daily).sort();
   const today = new Date();
   const startDate = dates.length > 0 ? new Date(dates[0]) : new Date(today.getTime() - 7 * 86400000);
 
-  // Build cumulative actual
   let cum = 0;
   const actualMap = {};
   for (const d of dates) {
@@ -49,25 +49,21 @@ router.get('/', (req, res) => {
     actualMap[d] = cum;
   }
 
-  // Build chart data array from startDate to today + 30 days
-  const chartEnd = new Date(today.getTime() + 30 * 86400000);
-  const totalDays = Math.max(1, Math.round((chartEnd - startDate) / 86400000));
-  const totalGoalPoints = goals.length * 1 + projects.length * 10;
-  const dailyRate = totalGoalPoints > 0 ? totalGoalPoints / totalDays : 2;
+  // Chart data: startDate → today + 30 days
+  const chartEnd   = new Date(today.getTime() + 30 * 86400000);
+  const totalDays  = Math.max(1, Math.round((chartEnd - startDate) / 86400000));
+  const totalPts   = goals.length * 1 + projects.length * 10;
+  const dailyRate  = totalPts > 0 ? totalPts / totalDays : 2;
 
   const chartData = [];
-  let cur = new Date(startDate);
-  let dayIndex = 0;
-  let lastActual = 0;
-
+  let cur = new Date(startDate), dayIndex = 0, lastActual = 0;
   while (cur <= chartEnd) {
     const ds = cur.toISOString().slice(0, 10);
     if (actualMap[ds] !== undefined) lastActual = actualMap[ds];
-
     chartData.push({
-      date: ds,
-      label: formatLabel(cur),
-      actual: cur <= today ? lastActual : null,
+      date:      ds,
+      label:     cur.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      actual:    cur <= today ? lastActual : null,
       projected: Math.round(dayIndex * dailyRate),
     });
     cur.setDate(cur.getDate() + 1);
@@ -75,16 +71,13 @@ router.get('/', (req, res) => {
   }
 
   res.json({
-    goalsCompleted: completedGoals.length,
+    goalsCompleted:    completedGoals.length,
     projectsCompleted: projects.length,
-    punishmentsGiven: punishments.filter(p => p.executePending || p.status === 'completed').length,
+    punishmentsGiven:  punishments.filter(p => p.executePending || p.status === 'completed').length,
     chartData,
-    commitData,
+    commitDataConnor,
+    commitDataJack,
   });
 });
-
-function formatLabel(date) {
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
 
 export default router;
