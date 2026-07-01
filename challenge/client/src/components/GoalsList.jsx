@@ -3,9 +3,9 @@ import SpotlightCard from './SpotlightCard.jsx';
 import GoalCard from './GoalCard.jsx';
 import { createGoal } from '../api.js';
 
-export default function GoalsList({ title, owner, goals, setGoals, allGoals, token, role, canEdit }) {
+export default function GoalsList({ title, owner, goals, setGoals, allGoals, token, role, canEdit, adminMode = false }) {
   const [adding, setAdding] = useState(false);
-  const [form,   setForm]   = useState({ title: '', description: '' });
+  const [form,   setForm]   = useState({ title: '', description: '', type: 'daily', dueDate: '', points: 1 });
   const [saving, setSaving] = useState(false);
 
   async function handleAdd(e) {
@@ -13,9 +13,17 @@ export default function GoalsList({ title, owner, goals, setGoals, allGoals, tok
     if (!form.title.trim()) return;
     setSaving(true);
     try {
-      const created = await createGoal(token, form);
+      const payload = {
+        title:       form.title,
+        description: form.description,
+        type:        form.type,
+        dueDate:     form.dueDate || null,
+        points:      Number(form.points) || 1,
+        ...(adminMode ? { owner } : {}),
+      };
+      const created = await createGoal(token, payload);
       setGoals([...allGoals, created]);
-      setForm({ title: '', description: '' });
+      setForm({ title: '', description: '', type: 'daily', dueDate: '', points: 1 });
       setAdding(false);
     } catch { /* ignore */ }
     setSaving(false);
@@ -46,6 +54,35 @@ export default function GoalsList({ title, owner, goals, setGoals, allGoals, tok
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
             placeholder="Description (optional)"
           />
+          <div className="goal-form-grid">
+            <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="specific">Specific Date</option>
+            </select>
+            {form.type === 'specific' && (
+              <input
+                type="date"
+                value={form.dueDate}
+                onChange={e => setForm(f => ({ ...f, dueDate: e.target.value }))}
+              />
+            )}
+          </div>
+          {adminMode && (
+            <div className="goal-form-row">
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', width: '100%' }}>
+                Points:
+                <input
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={form.points}
+                  onChange={e => setForm(f => ({ ...f, points: e.target.value }))}
+                  style={{ width: 60 }}
+                />
+              </label>
+            </div>
+          )}
           <div className="form-actions">
             <button type="submit" className="btn-primary btn-sm" disabled={saving}>Add</button>
             <button type="button" className="btn-ghost btn-sm" onClick={() => setAdding(false)}>Cancel</button>

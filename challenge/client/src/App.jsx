@@ -8,11 +8,9 @@ import UserProgressSection  from './components/UserProgressSection.jsx';
 import CommitCalendar       from './components/CommitCalendar.jsx';
 import PerformanceChart     from './components/PerformanceChart.jsx';
 import ProjectGallery       from './components/ProjectGallery.jsx';
-// Admin-panel components
-import ProgressBars         from './components/ProgressBars.jsx';
-import CompetitorSection    from './components/CompetitorSection.jsx';
-import GoalsList            from './components/GoalsList.jsx';
-import PunishmentsSection   from './components/PunishmentsSection.jsx';
+// Dashboard components
+import UserDashboard        from './components/UserDashboard.jsx';
+import AdminDashboard       from './components/AdminDashboard.jsx';
 
 import {
   fetchAlgorithms, fetchGoals, fetchCompetitorGoals, fetchResearch,
@@ -24,8 +22,7 @@ export default function App() {
   const [username, setUsername] = useState(() => localStorage.getItem('ct_user'));
   const [role,     setRole]     = useState(() => localStorage.getItem('ct_role'));
   const [showLogin,  setShowLogin]  = useState(false);
-  const [showAdmin,  setShowAdmin]  = useState(false);
-  const [statsUser,  setStatsUser]  = useState('connor'); // toggle for calendar/perf
+  const [statsUser,  setStatsUser]  = useState('connor');
 
   const [algorithms,      setAlgorithms]      = useState(null);
   const [research,        setResearch]        = useState(null);
@@ -39,8 +36,8 @@ export default function App() {
   function handleLogin(tok, user, r) {
     setToken(tok); setUsername(user); setRole(r);
     localStorage.setItem('ct_token', tok);
-    localStorage.setItem('ct_user', user);
-    localStorage.setItem('ct_role', r);
+    localStorage.setItem('ct_user',  user);
+    localStorage.setItem('ct_role',  r);
     setShowLogin(false);
   }
   function handleLogout() {
@@ -65,10 +62,50 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const isAdmin     = role === 'admin';
-  const isChallenge = role === 'challenge';
+  const isAdmin  = role === 'admin';
+  const isConnor = role === 'connor';
+  const isJack   = role === 'challenge';
+
   const connorGoals = goals.filter(g => g.owner === 'connor');
   const jackGoals   = goals.filter(g => g.owner === 'jack');
+
+  // ── Logged-in user dashboards ──────────────────────────────────
+  if (token && (isAdmin || isConnor || isJack)) {
+    return (
+      <UserDashboard
+        username={username}
+        role={role}
+        token={token}
+        allGoals={goals}
+        setAllGoals={setGoals}
+        research={research}
+        setResearch={setResearch}
+        algorithms={algorithms}
+        stats={stats}
+        onLogout={handleLogout}
+        adminPanel={isAdmin ? (
+          <AdminDashboard
+            algorithms={algorithms}
+            connorGoals={connorGoals}
+            jackGoals={jackGoals}
+            allGoals={goals}
+            setAllGoals={setGoals}
+            competitorGoals={competitorGoals}
+            setCompetitorGoals={setCompetitorGoals}
+            punishments={punishments}
+            setPunishments={setPunishments}
+            settings={settings}
+            setSettings={setSettings}
+            token={token}
+            role={role}
+          />
+        ) : null}
+      />
+    );
+  }
+
+  // ── Public / viewer view ───────────────────────────────────────
+  const barLabels = settings.barLabels || {};
 
   const recentConnor = [...connorGoals]
     .filter(g => g.selfProgress >= 100)
@@ -84,29 +121,19 @@ export default function App() {
   const algAvg = algorithms
     ? Math.round((algorithms.finance + algorithms.cs + algorithms.engineering) / 3) : 0;
 
-  const barLabels = settings.barLabels || {};
-
-  // Save a custom bar label to settings
   async function handleLabelSave(key, newLabel) {
-    const updated = await updateSettings(token, {
-      barLabels: { ...barLabels, [key]: newLabel }
-    });
+    const updated = await updateSettings(token, { barLabels: { ...barLabels, [key]: newLabel } });
     setSettings(updated);
   }
 
   const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-  // Commit data for selected user
-  const activeCommitData = statsUser === 'jack'
-    ? stats?.commitDataJack
-    : stats?.commitDataConnor;
+  const activeCommitData = statsUser === 'jack' ? stats?.commitDataJack : stats?.commitDataConnor;
 
   return (
     <>
       <PixelBlast />
 
       <div className="app-wrapper">
-        {/* ── Header ── */}
         <header className="vienna-header">
           <div className="vienna-title-block">
             <h1 className="vienna-title">Project Vienna</h1>
@@ -116,11 +143,6 @@ export default function App() {
             {token ? (
               <>
                 <span className="username-chip">{username}</span>
-                {isAdmin && (
-                  <button className="btn-ghost" onClick={() => setShowAdmin(a => !a)}>
-                    {showAdmin ? 'Hide Panel' : 'Admin Panel'}
-                  </button>
-                )}
                 <button onClick={handleLogout} className="btn-ghost">Log out</button>
               </>
             ) : (
@@ -138,10 +160,8 @@ export default function App() {
         )}
 
         <main className="app-main">
-          {/* ── Clock ── */}
           <Clock />
 
-          {/* ── Top: Chart + Stats ── */}
           <div className="vienna-top">
             <div className="vienna-chart-card">
               <div className="section-heading">Cumulative Progress</div>
@@ -150,7 +170,6 @@ export default function App() {
             <StatsPanel stats={stats} />
           </div>
 
-          {/* ── User sections ── */}
           {research && (
             <>
               <UserProgressSection
@@ -162,7 +181,7 @@ export default function App() {
                 barAColor="#089981"
                 barBColor="#26a69a"
                 recentGoals={recentJack}
-                canEdit={isAdmin || isChallenge}
+                canEdit={false}
                 token={token}
                 role={role}
                 onUpdate={setResearch}
@@ -188,7 +207,6 @@ export default function App() {
             </>
           )}
 
-          {/* ── Bottom: Calendar/Perf + Projects ── */}
           <div className="vienna-bottom">
             <div className="vienna-left-stats">
               <div className="vienna-card">
@@ -225,73 +243,7 @@ export default function App() {
               />
             </div>
           </div>
-
-          {/* ── Admin panel (toggle) ── */}
-          {isAdmin && showAdmin && (
-            <div className="admin-panel">
-              <div className="admin-panel-header">
-                <div className="section-heading" style={{ marginBottom: 0 }}>Admin Panel</div>
-              </div>
-              {algorithms && (
-                <ProgressBars algorithms={algorithms} userProgress={connorAvg} />
-              )}
-              <CompetitorSection
-                competitorGoals={competitorGoals}
-                setCompetitorGoals={setCompetitorGoals}
-                algorithms={algorithms}
-                token={token}
-                settings={settings}
-                setSettings={setSettings}
-              />
-              <div className="goals-grid">
-                <GoalsList
-                  title="Connor's Goals"
-                  owner="connor"
-                  goals={connorGoals}
-                  setGoals={setGoals}
-                  allGoals={goals}
-                  token={token}
-                  role={role}
-                  canEdit={isAdmin}
-                />
-                <GoalsList
-                  title="Jack's Goals"
-                  owner="jack"
-                  goals={jackGoals}
-                  setGoals={setGoals}
-                  allGoals={goals}
-                  token={token}
-                  role={role}
-                  canEdit={isChallenge}
-                />
-              </div>
-              <PunishmentsSection
-                punishments={punishments}
-                setPunishments={setPunishments}
-                token={token}
-                role={role}
-              />
-            </div>
-          )}
-
-          {/* Challenge user still sees own goals */}
-          {isChallenge && (
-            <div style={{ marginTop: '1.5rem' }}>
-              <GoalsList
-                title="Jack's Goals"
-                owner="jack"
-                goals={jackGoals}
-                setGoals={setGoals}
-                allGoals={goals}
-                token={token}
-                role={role}
-                canEdit={true}
-              />
-            </div>
-          )}
         </main>
-
-        {/* ── Full-width footer (outside max-width container) ── */}
       </div>
 
       <footer className="vienna-footer">

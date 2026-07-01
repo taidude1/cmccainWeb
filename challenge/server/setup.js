@@ -7,13 +7,19 @@ const rl = createInterface({ input: process.stdin, output: process.stdout });
 const ask = q => new Promise(resolve => rl.question(q, resolve));
 
 const ROLES = [
-  { key: 'admin',     label: 'Admin (Connor)'          },
-  { key: 'challenge', label: 'Challenge friend (Jack)'  },
-  { key: 'viewer',    label: 'Viewer (Yitian)'          },
+  { key: 'admin',     label: 'Admin (goal management / site admin)' },
+  { key: 'connor',    label: 'Connor (personal dashboard)'          },
+  { key: 'challenge', label: 'Jack (challenge participant)'         },
+  { key: 'viewer',    label: 'Yitian (read-only viewer)'            },
 ];
 
 async function main() {
-  console.log('\nChallenge Tracker — User Setup\n');
+  console.log('\nProject Vienna — User Setup\n');
+  console.log('This creates 4 accounts:');
+  console.log('  admin   → goal management panel (separate from Connor)');
+  console.log('  connor  → Connor\'s personal dashboard');
+  console.log('  jack    → Jack\'s personal dashboard');
+  console.log('  viewer  → read-only public view\n');
 
   const existing = existsSync('./data/users.json')
     ? JSON.parse(readFileSync('./data/users.json', 'utf8'))
@@ -31,7 +37,7 @@ async function main() {
   }
 
   writeFileSync('./data/users.json', JSON.stringify(users, null, 2));
-  console.log('\n✓ All users saved. Run "npm run dev" to start the server.\n');
+  console.log('\n✓ All users saved.\n');
   rl.close();
 }
 

@@ -52,6 +52,21 @@ export const updateGoal = (token, id, data) =>
 export const deleteGoal = (token, id) =>
   request(`${BASE}/goals/${id}`, { method: 'DELETE', headers: authHeaders(token) });
 
+// Goal submission (text + optional file)
+export async function submitGoal(token, goalId, text, file) {
+  const body = new FormData();
+  if (text) body.append('text', text);
+  if (file) body.append('file', file);
+  const res = await fetch(`${BASE}/goals/${goalId}/submit`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Submit failed');
+  return data;
+}
+
 // Competitor goals
 export const fetchCompetitorGoals = () => request(`${BASE}/competitor-goals`);
 export const createCompetitorGoal = (token, data) =>
